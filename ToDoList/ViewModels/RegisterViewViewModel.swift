@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+class RegisterViewViewModel: ObservableObject {
+    @Published var name = ""
+    @Published var emailAddress = ""
+    @Published var password = ""
+    
+    init() {}
+}
