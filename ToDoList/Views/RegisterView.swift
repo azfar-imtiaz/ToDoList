@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct RegisterView: View {
+    @StateObject var viewModel = RegisterViewViewModel()
+    
     var body: some View {
-        @State var viewModel = RegisterViewViewModel()
         
         VStack {
             HeaderView(title: "Register", subTitle: "Start organizing your to-dos!", background: Color.orange)
@@ -27,7 +28,7 @@ struct RegisterView: View {
                     .textFieldStyle(DefaultTextFieldStyle())
                 
                 TLButton(title: "Create Account", backgroundColor: Color.green) {
-                    // attempt registration
+                    viewModel.register()
                 }
             }
             .offset(y: -60)
