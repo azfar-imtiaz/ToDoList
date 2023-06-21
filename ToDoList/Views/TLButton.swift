@@ -16,15 +16,18 @@ struct TLButton: View {
         Button {
             action()
         } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(backgroundColor)
-                Text(title)
-                    .foregroundColor(Color.white)
-                    .bold()
-            }
+            Text(title)
+                .foregroundColor(Color.white)
+                .bold()
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
+                .background {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(backgroundColor)
+                        .padding(.horizontal)
+
+                }
         }
-        .padding(.vertical, 10)
     }
 }
 

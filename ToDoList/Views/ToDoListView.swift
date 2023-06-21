@@ -6,10 +6,17 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ToDoListView: View {
     var body: some View {
-        Text("Welcome to your account!")
+        VStack {
+            Text("Welcome to your account!")
+            Button("Log out") {
+                try? Auth.auth().signOut()
+            }
+        }
+        
     }
 }
 

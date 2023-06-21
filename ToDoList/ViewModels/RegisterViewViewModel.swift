@@ -21,12 +21,15 @@ class RegisterViewViewModel: ObservableObject {
             return
         }
         
+        print("I get here!")
         Auth.auth().createUser(withEmail: emailAddress, password: password) { [weak self] result, error in
             guard let userId = result?.user.uid else {
+                print("Error!", error)
                 return
             }
             self?.insertUserRecord(id: userId)
         }
+        print("I get here also!")
     }
     
     private func insertUserRecord(id: String) {
