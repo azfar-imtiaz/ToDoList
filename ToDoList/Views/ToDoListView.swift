@@ -9,14 +9,17 @@ import SwiftUI
 import FirebaseFirestoreSwift
 
 struct ToDoListView: View {
-    @StateObject var viewModel = ToDoListViewViewModel()
+    @StateObject var viewModel: ToDoListViewViewModel
     @FirestoreQuery var items: [ToDoListItem]
     
-    private let userId: String
-    init(userId: String) {
-        self.userId = userId
+    private let userID: String
+    init(userID: String) {
+        self.userID = userID
         self._items = FirestoreQuery(
-            collectionPath: "users/\(userId)/ToDos")
+            collectionPath: "users/\(userID)/ToDos")
+        // we initialize this like so here because we want it to store user ID
+        self._viewModel = StateObject(
+            wrappedValue: ToDoListViewViewModel(userID: userID))
     }
     
     var body: some View {
@@ -51,6 +54,6 @@ struct ToDoListView: View {
 
 struct ToDoListView_Previews: PreviewProvider {
     static var previews: some View {
-        ToDoListView(userId: "17HZ03u2R3UFV75wVPjK5oh0PeF3")
+        ToDoListView(userID: "17HZ03u2R3UFV75wVPjK5oh0PeF3")
     }
 }
