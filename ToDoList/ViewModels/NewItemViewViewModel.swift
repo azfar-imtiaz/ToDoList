@@ -5,6 +5,8 @@
 //  Created by Azfar Imtiaz on 2023-06-15.
 //
 
+import FirebaseAuth
+import FirebaseFirestore
 import Foundation
 
 class NewItemViewViewModel: ObservableObject {
@@ -15,7 +17,28 @@ class NewItemViewViewModel: ObservableObject {
     init() {}
     
     func save() {
+        // Get current user ID
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+        }
         
+        // Create model
+        let newID = UUID().uuidString
+        let newItem = ToDoListItem(
+            id: newID,
+            title: title,
+            dueDate: dueDate.timeIntervalSince1970,
+            createdDate: Date().timeIntervalSince1970,
+            isDone: false
+        )
+        
+        // Save model to DB
+        let db = Firestore.firestore()
+        db.collection("users")
+            .document(userID)
+            .collection("ToDos")
+            .document(newID)
+            .setData(newItem.asDictionary())
     }
     
     var canSave: Bool {
