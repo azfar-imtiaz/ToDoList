@@ -32,7 +32,7 @@ struct ToDoListView: View {
                                 viewModel.delete(itemID: item.id)
                             }
                             .tint(Color.red)
-                        }
+                        }.padding()
                 }
                 .listStyle(.plain)
             }

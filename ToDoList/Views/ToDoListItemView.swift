@@ -17,10 +17,11 @@ struct ToDoListItemView: View {
                 Text(item.title)
                     .font(.body)
                     .padding(.bottom, 5)
+                    .foregroundColor(item.isDone == true ? Color.gray : Color.black)
                 
                 Text("\(Date(timeIntervalSince1970: item.dueDate).formatted(date: .abbreviated, time: .shortened))")
                     .font(.footnote)
-                    .foregroundColor(item.dueDate.isLess(than: Date().timeIntervalSince1970) ? Color.red : Color(.secondaryLabel))
+                    .foregroundColor(item.isDone == true ? Color.gray : item.dueDate.isLess(than: Date().timeIntervalSince1970) ? Color.red : Color(.secondaryLabel))
             }
             
             Spacer()
@@ -29,6 +30,7 @@ struct ToDoListItemView: View {
                 viewModel.toggleIsDone(item: item)
             } label: {
                 Image(systemName: item.isDone ? "checkmark.circle.fill" : "circle")
+                    .foregroundColor(.blue)
             }
         }
     }
