@@ -28,6 +28,10 @@ struct MainView: View {
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
+            TaskCompletionView(userID: viewModel.currentUserId)
+                .tabItem {
+                    Label("Completion %", systemImage: "percent")
+                }
             ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.circle")
