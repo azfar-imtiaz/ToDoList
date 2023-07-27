@@ -15,9 +15,9 @@ struct ProfileView: View {
                 if let user = viewModel.user {
                     profile(user: user)
                 } else {
-                    Button("Log Out") {
-                        viewModel.logOut()
-                    }
+                    TLButton(title: "Log Out", backgroundColor: .red, action: viewModel.logOut)
+                        .frame(width: 200, height: 70, alignment: .bottom)
+                        .padding()
                     Text("Loading user...")
                 }
             }
@@ -43,18 +43,21 @@ struct ProfileView: View {
             HStack {
                 Text("Name: ")
                     .bold()
+                Spacer()
                 Text(user.name)
             }
             .padding()
             HStack {
                 Text("Email Address: ")
                     .bold()
+                Spacer()
                 Text(user.emailAddress)
             }
             .padding()
             HStack {
                 Text("Member since: ")
                     .bold()
+                Spacer()
                 Text("\(Date(timeIntervalSince1970: user.joinDate).formatted(date: .abbreviated, time: .shortened))")
             }
             .padding()
@@ -62,11 +65,9 @@ struct ProfileView: View {
         .padding()
         
         // Sign out button
-        Button("Log Out") {
-            viewModel.logOut()
-        }
-        .tint(.red)
-        .padding()
+        TLButton(title: "Log Out", backgroundColor: .red, action: viewModel.logOut)
+            .frame(width: 200, height: 70, alignment: .bottom)
+            .padding()
         
         Spacer()
     }
