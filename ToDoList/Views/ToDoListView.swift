@@ -24,15 +24,38 @@ struct ToDoListView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack() {
+                Spacer()
+                Text("Incomplete Tasks")
+                    .font(.title2)
                 List(items) { item in
-                    ToDoListItemView(item: item)
-                        .swipeActions {
-                            Button("Delete") {
-                                viewModel.delete(itemID: item.id)
+                    if !item.isDone {
+                        ToDoListItemView(item: item)
+                            .swipeActions {
+                                Button("Delete") {
+                                    viewModel.delete(itemID: item.id)
+                                }
+                                .tint(Color.red)
                             }
-                            .tint(Color.red)
-                        }.padding()
+                            .padding()
+                    }
+                }
+                .listStyle(.plain)
+                
+                Spacer()
+                Text("Completed Tasks")
+                    .font(.title2)
+                List(items) { item in
+                    if item.isDone {
+                        ToDoListItemView(item: item)
+                            .swipeActions {
+                                Button("Delete") {
+                                    viewModel.delete(itemID: item.id)
+                                }
+                                .tint(Color.red)
+                            }
+                            .padding()
+                    }
                 }
                 .listStyle(.plain)
             }
@@ -54,6 +77,6 @@ struct ToDoListView: View {
 
 struct ToDoListView_Previews: PreviewProvider {
     static var previews: some View {
-        ToDoListView(userID: "17HZ03u2R3UFV75wVPjK5oh0PeF3")
+        ToDoListView(userID: "5lbdg6FQaMhItGAq1AKwbCMCkfq1")
     }
 }
