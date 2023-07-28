@@ -6,11 +6,12 @@
 //
 
 import Foundation
-import FirebaseFirestore
 import FirebaseAuth
+import FirebaseFirestore
 
 class TaskCompletionViewViewModel: ObservableObject {
     @Published var completionPercentage: Double = -1.0
+    @Published var completionOnTimePercentage: Double = -1.0
     private let userID: String
     
     init(userID: String) {
@@ -24,6 +25,7 @@ class TaskCompletionViewViewModel: ObservableObject {
 
         var totalTasks = 0.0
         var completedTasks = 0.0
+        var completedOnTimeTasks = 0.0
         let db = Firestore.firestore()
         let collection = db.collection("users/\(userID)/ToDos")
         collection.getDocuments { (querySnaphot, err) in
@@ -34,8 +36,13 @@ class TaskCompletionViewViewModel: ObservableObject {
                 for doc in querySnaphot!.documents {
                     do {
                         let isDone: Bool = try doc.data(as: ToDoListItem.self).isDone
+                        let dueDate: TimeInterval = try doc.data(as: ToDoListItem.self).dueDate
+                        let completedDate: TimeInterval = try doc.data(as: ToDoListItem.self).completedDate
                         if isDone {
                             completedTasks += 1
+                        }
+                        if isDone && Date(timeIntervalSince1970: completedDate) <= Date(timeIntervalSince1970: dueDate) {
+                            completedOnTimeTasks += 1
                         }
                         totalTasks += 1
                     } catch {
@@ -43,6 +50,7 @@ class TaskCompletionViewViewModel: ObservableObject {
                     }
                 }
                 self.completionPercentage = (completedTasks / totalTasks) * 100.0
+                self.completionOnTimePercentage = (completedOnTimeTasks / totalTasks) * 100.0
             }
         }
     }

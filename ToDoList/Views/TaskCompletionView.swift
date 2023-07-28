@@ -20,25 +20,42 @@ struct TaskCompletionView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack() {
                 Spacer()
-                if self.viewModel.completionPercentage < 0.0 {
+                /* if self.viewModel.completionPercentage < 0.0 {
                     Text("Calculating percentage... Check again in a while.")
                         .padding()
-                } else {
-                    Text("Your task completion percentage is:")
-                        .padding()
-                    Text(String(format: "%.1f%", self.viewModel.completionPercentage))
-                        .padding()
-                        .font(.title)
-                        .foregroundColor(self.viewModel.completionPercentage >= 50.0 ? .green : .gray)
-                }
+                }*/
+            
+                completionPercentageView(headerText: "Tasks completed overall", percentage: self.viewModel.completionPercentage)
+                    .background(Color(UIColor.systemGroupedBackground))
+                    .cornerRadius(8)
+                    .padding()
+
+                completionPercentageView(headerText: "Tasks completed on time", percentage: self.viewModel.completionOnTimePercentage)
+                    .background(Color(UIColor.systemGroupedBackground))
+                    .cornerRadius(8)
+                    .padding()
                 Spacer()
             }
             .navigationTitle("Task Completion")
         }
         .onAppear() {
             viewModel.calculateCompletionPercentage()
+        }
+    }
+    
+    @ViewBuilder
+    func completionPercentageView(headerText: String, percentage: Double) -> some View {
+        VStack() {
+            Text(headerText)
+                .padding()
+                .font(.title)
+            Text(String(format: "%.1f%", percentage))
+                .font(.title)
+                .padding()
+                .frame(maxWidth: UIScreen.main.bounds.width, alignment: .center)
+                .foregroundColor(percentage >= 50.0 ? .green : .pink)
         }
     }
 }

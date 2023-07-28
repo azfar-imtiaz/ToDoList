@@ -22,6 +22,5 @@ struct ToDoListItem: Codable, Identifiable {
         } else {
             completedDate = Date(timeIntervalSince1970: createdDate).addingTimeInterval(-86400).timeIntervalSince1970
         }
-        print("Completed date is: \(Date(timeIntervalSince1970: completedDate))")
     }
 }
