@@ -29,6 +29,7 @@ class NewItemViewViewModel: ObservableObject {
             title: title,
             dueDate: dueDate.timeIntervalSince1970,
             createdDate: Date().timeIntervalSince1970,
+            completedDate: Date().addingTimeInterval(-86400).timeIntervalSince1970,
             isDone: false
         )
         

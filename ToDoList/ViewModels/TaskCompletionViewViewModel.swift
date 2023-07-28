@@ -39,7 +39,7 @@ class TaskCompletionViewViewModel: ObservableObject {
                         }
                         totalTasks += 1
                     } catch {
-                        print("Exception occurred!")
+                        print("The following exception occurred: \(error)")
                     }
                 }
                 self.completionPercentage = (completedTasks / totalTasks) * 100.0

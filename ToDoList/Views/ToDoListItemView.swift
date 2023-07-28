@@ -38,6 +38,13 @@ struct ToDoListItemView: View {
 
 struct ToDoListItemView_Previews: PreviewProvider {
     static var previews: some View {
-        ToDoListItemView(item: ToDoListItem(id: "17HZ03u2R3UFV75wVPjK5oh0PeF3", title: "Buy bread", dueDate: Date().timeIntervalSince1970, createdDate: Date().timeIntervalSince1970, isDone: false))
+        ToDoListItemView(item: ToDoListItem(
+            id: "some_random_id",
+            title: "Buy bread",
+            dueDate: Date().timeIntervalSince1970,
+            createdDate: Date().timeIntervalSince1970,
+            completedDate: Date().addingTimeInterval(-86400).timeIntervalSince1970,
+            isDone: false)
+        )
     }
 }
