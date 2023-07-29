@@ -12,7 +12,7 @@ struct ToDoListView: View {
     @StateObject var viewModel: ToDoListViewViewModel
     @FirestoreQuery var items: [ToDoListItem]
     
-    private let userID: String
+//    private let userID: String
     init(userID: String) {
         self.userID = userID
         self._items = FirestoreQuery(
@@ -23,46 +23,43 @@ struct ToDoListView: View {
     }
     
     var body: some View {
+        let sortedItemsComplete = getSortedItems(completed: false, items: items)
+        let sortedItemsIncomplete = getSortedItems(completed: true, items: items)
         NavigationView {
-            VStack() {
+            VStack {
                 Spacer()
                 Text("Incomplete Tasks")
                     .font(.title2)
-                List(items) { item in
-                    if !item.isDone {
-                        ToDoListItemView(item: item)
-                            .swipeActions {
-                                Button("Delete") {
-                                    viewModel.delete(itemID: item.id)
-                                }
-                                .tint(Color.red)
-                            }
-                            .padding()
-                    }
+                    .foregroundColor(.pink)
+                if sortedItemsComplete.count > 0 {
+                    displayItems(sortedItems: sortedItemsComplete)
+                    .listStyle(.inset)
+                    .overlay(RoundedRectangle(cornerRadius: 16)
+                        .strokeBorder(.gray, lineWidth: 3)
+                        .opacity(0.2))
+                    .padding()
+                    .frame(height: UIScreen.main.bounds.height * 0.4)
+                } else {
+                    Text("You are done for the day - grab a beer and relax you big MO!")
+                        .padding()
+                        .multilineTextAlignment(.center)
+                        .background(.thickMaterial)
+                        .cornerRadius(10)
                 }
-                .listStyle(.plain)
                 
-                Spacer()
                 Text("Completed Tasks")
                     .font(.title2)
-                List(items) { item in
-                    if item.isDone {
-                        ToDoListItemView(item: item)
-                            .swipeActions {
-                                Button("Delete") {
-                                    viewModel.delete(itemID: item.id)
-                                }
-                                .tint(Color.red)
-                            }
-                            .padding()
-                    }
-                }
+                    .foregroundColor(.green)
+                displayItems(sortedItems: sortedItemsIncomplete)
                 .listStyle(.plain)
+                .overlay(RoundedRectangle(cornerRadius: 16)
+                    .strokeBorder(.gray, lineWidth: 3)
+                    .opacity(0.2))
+                .padding()
             }
             .navigationTitle("To Do List")
             .toolbar {
                 Button {
-                    // action
                     viewModel.showingNewItemView = true
                 } label: {
                     Image(systemName: "plus")
@@ -71,6 +68,26 @@ struct ToDoListView: View {
             .sheet(isPresented: $viewModel.showingNewItemView) {
                 NewItemView(newItemPresented: $viewModel.showingNewItemView)
             }
+        }
+    }
+    
+    @ViewBuilder
+    func displayItems(sortedItems: [ToDoListItem]) -> some View {
+        List(sortedItems) { item in
+            ToDoListItemView(item: item)
+                .swipeActions {
+                    Button("Delete") {
+                        viewModel.delete(itemID: item.id)
+                    }
+                    .tint(Color.red)
+                }
+                .padding(.vertical)
+        }
+    }
+    
+    func getSortedItems(completed: Bool, items: [ToDoListItem]) -> [ToDoListItem] {
+        return items.filter { $0.isDone == completed }.sorted {
+            $0.dueDate < $1.dueDate
         }
     }
 }

@@ -15,6 +15,7 @@ struct ToDoListItemView: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(item.title)
+                    .strikethrough(item.isDone ? true : false)
                     .font(.body)
                     .padding(.bottom, 5)
                     .foregroundColor(item.isDone == true ? Color.gray : Color.black)
