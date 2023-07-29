@@ -12,7 +12,7 @@ struct ToDoListView: View {
     @StateObject var viewModel: ToDoListViewViewModel
     @FirestoreQuery var items: [ToDoListItem]
     
-//    private let userID: String
+    private let userID: String
     init(userID: String) {
         self.userID = userID
         self._items = FirestoreQuery(
@@ -23,24 +23,21 @@ struct ToDoListView: View {
     }
     
     var body: some View {
-        let sortedItemsComplete = getSortedItems(completed: false, items: items)
-        let sortedItemsIncomplete = getSortedItems(completed: true, items: items)
+        let sortedItemsComplete = getSortedItems(completed: true, items: items)
+        let sortedItemsIncomplete = getSortedItems(completed: false, items: items)
         NavigationView {
-            VStack {
+            VStack(alignment: .leading) {
                 Spacer()
                 Text("Incomplete Tasks")
-                    .font(.title2)
+                    .font(.title3)
                     .foregroundColor(.pink)
-                if sortedItemsComplete.count > 0 {
-                    displayItems(sortedItems: sortedItemsComplete)
-                    .listStyle(.inset)
-                    .overlay(RoundedRectangle(cornerRadius: 16)
-                        .strokeBorder(.gray, lineWidth: 3)
-                        .opacity(0.2))
-                    .padding()
-                    .frame(height: UIScreen.main.bounds.height * 0.4)
+                    .padding(.horizontal)
+                if sortedItemsIncomplete.count > 0 {
+                    displayItems(sortedItems: sortedItemsIncomplete, tasksComplete: false)
+                        .frame(maxHeight: UIScreen.main.bounds.height * 0.4)
+                        .fixedSize(horizontal: false, vertical: true)
                 } else {
-                    Text("You are done for the day - grab a beer and relax you big MO!")
+                    Text("You are done for the day - grab a RoohAfza and relax!")
                         .padding()
                         .multilineTextAlignment(.center)
                         .background(.thickMaterial)
@@ -48,14 +45,11 @@ struct ToDoListView: View {
                 }
                 
                 Text("Completed Tasks")
-                    .font(.title2)
+                    .font(.title3)
                     .foregroundColor(.green)
-                displayItems(sortedItems: sortedItemsIncomplete)
-                .listStyle(.plain)
-                .overlay(RoundedRectangle(cornerRadius: 16)
-                    .strokeBorder(.gray, lineWidth: 3)
-                    .opacity(0.2))
-                .padding()
+                    .padding(.horizontal)
+                displayItems(sortedItems: sortedItemsComplete, tasksComplete: true)
+                    .frame(maxHeight: .infinity)
             }
             .navigationTitle("To Do List")
             .toolbar {
@@ -72,8 +66,8 @@ struct ToDoListView: View {
     }
     
     @ViewBuilder
-    func displayItems(sortedItems: [ToDoListItem]) -> some View {
-        List(sortedItems) { item in
+    func displayItems(sortedItems: [ToDoListItem], tasksComplete: Bool) -> some View {
+        /*List(sortedItems) { item in
             ToDoListItemView(item: item)
                 .swipeActions {
                     Button("Delete") {
@@ -82,7 +76,29 @@ struct ToDoListView: View {
                     .tint(Color.red)
                 }
                 .padding(.vertical)
+        }*/
+        ScrollView {
+            Spacer()
+            ForEach(sortedItems) { item in
+                VStack {
+                    ToDoListItemView(item: item)
+                        .swipeActions {
+                            Button("Delete") {
+                                viewModel.delete(itemID: item.id)
+                            }
+                            .tint(.red)
+                        }
+                        .padding(tasksComplete ? .horizontal : .all)
+                }
+                Divider()
+                    .padding(.horizontal)
+            }
         }
+        .overlay(RoundedRectangle(cornerRadius: 16)
+            .strokeBorder(.gray, lineWidth: 3)
+            .opacity(0.2))
+        .padding()
+        
     }
     
     func getSortedItems(completed: Bool, items: [ToDoListItem]) -> [ToDoListItem] {
