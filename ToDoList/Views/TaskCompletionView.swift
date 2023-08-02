@@ -27,15 +27,29 @@ struct TaskCompletionView: View {
                         .padding()
                 }*/
             
-                completionPercentageView(headerText: "Tasks completed overall", percentage: self.viewModel.completionPercentage)
-                    .background(Color(UIColor.systemGroupedBackground))
-                    .cornerRadius(8)
-                    .padding()
-
-                completionPercentageView(headerText: "Tasks completed on time", percentage: self.viewModel.completionOnTimePercentage)
-                    .background(Color(UIColor.systemGroupedBackground))
-                    .cornerRadius(8)
-                    .padding()
+                VStack(alignment: .leading) {
+                    Section("Task Stats") {
+                        tasksStatsView(taskStats: self.viewModel.taskStatistics)
+                    }
+                }
+                .font(.bold(.title2)())
+                .padding(.horizontal)
+                
+                Spacer()
+                
+                VStack(alignment: .leading) {
+                    Section("Completion Percentage") {
+                        completionPercentageView(
+                            subheaderText: "OVERALL",
+                            percentage: self.viewModel.completionPercentage)
+                        
+                        completionPercentageView(
+                            subheaderText: "ON TIME",
+                            percentage: self.viewModel.completionOnTimePercentage)
+                    }
+                    .font(.bold(.title2)())
+                    .padding(.horizontal)
+                }
                 Spacer()
             }
             .navigationTitle("Task Completion")
@@ -46,17 +60,49 @@ struct TaskCompletionView: View {
     }
     
     @ViewBuilder
-    func completionPercentageView(headerText: String, percentage: Double) -> some View {
-        VStack() {
-            Text(headerText)
-                .padding()
-                .font(.title)
-            Text(String(format: "%.1f%", percentage))
-                .font(.title)
+    func tasksStatsView(taskStats: TaskStats) -> some View {
+        VStack {
+            HStack {
+                Text("Total Tasks Added")
+                Spacer()
+                Text(String(taskStats.totalTasks))
+            }
+            .padding()
+            Divider().padding(.horizontal)
+            HStack {
+                Text("Tasks Completed")
+                Spacer()
+                Text(String(taskStats.completedTasks))
+            }
+            .padding()
+            Divider().padding(.horizontal)
+            HStack {
+                Text("Tasks Completed (on time)")
+                Spacer()
+                Text(String(taskStats.completedOnTimeTasks))
+            }
+            .padding()
+        }
+        .background(Color(UIColor.systemGroupedBackground))
+        .cornerRadius(8)
+        .font(.body)
+    }
+    
+    @ViewBuilder
+    func completionPercentageView(subheaderText: String, percentage: Double) -> some View {
+        VStack {
+            Text(subheaderText)
+                .font(.body)
+                .padding(.top)
+            Text(String(format: "%.1f%%", percentage))
+                .font(.title2)
                 .padding()
                 .frame(maxWidth: UIScreen.main.bounds.width, alignment: .center)
                 .foregroundColor(percentage >= 50.0 ? .green : .pink)
         }
+        .background(Color(UIColor.systemGroupedBackground))
+        .cornerRadius(8)
+        .padding(.bottom)
     }
 }
 

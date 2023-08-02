@@ -12,6 +12,7 @@ import FirebaseFirestore
 class TaskCompletionViewViewModel: ObservableObject {
     @Published var completionPercentage: Double = -1.0
     @Published var completionOnTimePercentage: Double = -1.0
+    @Published var taskStatistics: TaskStats = TaskStats(totalTasks: -1, completedTasks: -1, completedOnTimeTasks: -1)
     private let userID: String
     
     init(userID: String) {
@@ -51,6 +52,11 @@ class TaskCompletionViewViewModel: ObservableObject {
                 }
                 self.completionPercentage = (completedTasks / totalTasks) * 100.0
                 self.completionOnTimePercentage = (completedOnTimeTasks / totalTasks) * 100.0
+                self.taskStatistics = TaskStats(
+                    totalTasks: Int(totalTasks),
+                    completedTasks: Int(completedTasks),
+                    completedOnTimeTasks: Int(completedOnTimeTasks)
+                )
             }
         }
     }
