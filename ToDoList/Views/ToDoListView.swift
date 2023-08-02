@@ -29,7 +29,7 @@ struct ToDoListView: View {
             VStack(alignment: .leading) {
                 Spacer()
                 Text("Incomplete Tasks")
-                    .font(.title3)
+                    .font(.bold(.title3)())
                     .foregroundColor(.pink)
                     .padding(.horizontal)
                 if sortedItemsIncomplete.count > 0 {
@@ -45,7 +45,7 @@ struct ToDoListView: View {
                 }
                 
                 Text("Completed Tasks")
-                    .font(.title3)
+                    .font(.bold(.title3)())
                     .foregroundColor(.green)
                     .padding(.horizontal)
                 displayItems(sortedItems: sortedItemsComplete, tasksComplete: true)
