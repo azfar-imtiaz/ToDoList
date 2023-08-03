@@ -32,7 +32,8 @@ struct TaskCompletionView: View {
                         tasksStatsView(taskStats: self.viewModel.taskStatistics)
                     }
                 }
-                .font(.bold(.title2)())
+                .font(.title2
+                    .weight(.semibold))
                 .padding(.horizontal)
                 
                 Spacer()
@@ -47,7 +48,8 @@ struct TaskCompletionView: View {
                             subheaderText: "ON TIME",
                             percentage: self.viewModel.completionOnTimePercentage)
                     }
-                    .font(.bold(.title2)())
+                    .font(.title2
+                        .weight(.semibold))
                     .padding(.horizontal)
                 }
                 Spacer()
@@ -94,7 +96,7 @@ struct TaskCompletionView: View {
             Text(subheaderText)
                 .font(.body)
                 .padding(.top)
-            Text(String(format: "%.1f%%", percentage))
+            Text(String(format: "%d %%", Int(percentage.rounded())))
                 .font(.title2)
                 .padding()
                 .frame(maxWidth: UIScreen.main.bounds.width, alignment: .center)

@@ -29,23 +29,30 @@ struct ToDoListView: View {
             VStack(alignment: .leading) {
                 Spacer()
                 Text("Incomplete Tasks")
-                    .font(.bold(.title3)())
+                    .font(.title2)
+                    .fontWeight(.semibold)
                     .foregroundColor(.pink)
-                    .padding(.horizontal)
+                    .padding([.horizontal, .top])
+                
                 if sortedItemsIncomplete.count > 0 {
                     displayItems(sortedItems: sortedItemsIncomplete, tasksComplete: false)
                         .frame(maxHeight: UIScreen.main.bounds.height * 0.4)
                         .fixedSize(horizontal: false, vertical: true)
                 } else {
-                    Text("You are done for the day - grab a RoohAfza and relax!")
-                        .padding()
-                        .multilineTextAlignment(.center)
-                        .background(.thickMaterial)
-                        .cornerRadius(10)
+                    HStack {
+                        Spacer()
+                        Text("You are done for the day - grab a RoohAfza and relax!")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                            .background(.thickMaterial)
+                            .cornerRadius(8)
+                        Spacer()
+                    }
+                    .padding(.bottom)
                 }
-                
                 Text("Completed Tasks")
-                    .font(.bold(.title3)())
+                    .font(.title2)
+                    .fontWeight(.semibold)
                     .foregroundColor(.green)
                     .padding(.horizontal)
                 displayItems(sortedItems: sortedItemsComplete, tasksComplete: true)
@@ -97,7 +104,7 @@ struct ToDoListView: View {
         .overlay(RoundedRectangle(cornerRadius: 16)
             .strokeBorder(.gray, lineWidth: 3)
             .opacity(0.2))
-        .padding()
+        .padding([.horizontal, .bottom])
         
     }
     

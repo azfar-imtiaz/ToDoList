@@ -30,7 +30,7 @@ struct MainView: View {
                 }
             TaskCompletionView(userID: viewModel.currentUserId)
                 .tabItem {
-                    Label("Completion %", systemImage: "percent")
+                    Label("Completion", systemImage: "percent")
                 }
             ProfileView()
                 .tabItem {
