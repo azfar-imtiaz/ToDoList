@@ -12,14 +12,48 @@ struct ProfileView: View {
     var body: some View {
         NavigationView {
             VStack {
-                if let user = viewModel.user {
-                    profile(user: user)
-                } else {
-                    TLButton(title: "Log Out", backgroundColor: .red, action: viewModel.logOut)
-                        .frame(width: 200, height: 70, alignment: .bottom)
+                HStack {
+                    Image("person-icon")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 65, height: 65)
                         .padding()
-                    Text("Loading user...")
+                        .overlay(Circle()
+                            .stroke(lineWidth: 3))
+                    Spacer()
                 }
+                .padding([.top, .horizontal])
+                Text("Hi, Azfar Imtiaz!")
+                    .font(.system(.title, design: .rounded)
+                        .weight(.semibold))
+                    .padding(.vertical)
+                
+                VStack (alignment: .leading) {
+                    HStack {
+                        Text("Email Address")
+                        Spacer()
+                        Text("azy.imtiaz@gmail.com")
+                    }
+                    .padding()
+                    Divider()
+                        .padding(.horizontal)
+                    HStack {
+                        Text("Member since")
+                        Spacer()
+                        Text("2014")
+                    }
+                    .padding()
+                }
+                .background(Color(UIColor.systemGroupedBackground))
+                .cornerRadius(8)
+                .padding()
+                Spacer()
+                TLButton(title: "Log Out", backgroundColor: .red, action: viewModel.logOut)
+                    .frame(
+                        width: UIScreen.main.bounds.width * 0.5,
+                        height: UIScreen.main.bounds.height * 0.1
+                    )
+                Spacer()                        
             }
             .navigationTitle("Profile")
         }
@@ -37,6 +71,7 @@ struct ProfileView: View {
             .foregroundColor(.blue)
             .frame(width: 125, height: 125)
             .padding()
+        
         
         // Info: Name, Email, Member since
         VStack(alignment: .leading) {
