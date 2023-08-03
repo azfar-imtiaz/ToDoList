@@ -108,6 +108,6 @@ struct TaskCompletionView: View {
 
 struct TaskCompletionView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskCompletionView(userID: "17HZ03u2R3UFV75wVPjK5oh0PeF3")
+        TaskCompletionView(userID: "")
     }
 }
