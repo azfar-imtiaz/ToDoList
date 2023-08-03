@@ -5,6 +5,11 @@
 //  Created by Azfar Imtiaz on 2023-06-15.
 //
 
+// Icons from:
+//  <a target="_blank" href="https://icons8.com/icon/23313/denied">Denied</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+//  <a target="_blank" href="https://icons8.com/icon/AaQ0GwIZEy82/tidy-up-skin-type-4">Tidy Up Skin Type 4</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
 import SwiftUI
 
 struct ProfileView: View {
@@ -12,20 +17,21 @@ struct ProfileView: View {
     var body: some View {
         NavigationView {
             VStack {
-                HStack {
-                    Image("person-icon")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 65, height: 65)
-                        .padding()
-                        .overlay(Circle()
-                            .stroke(lineWidth: 3))
-                        .foregroundColor(Color(UIColor.systemBlue))
-                    Spacer()
-                }
-                .padding([.top, .horizontal])
-                
                 if let user = viewModel.user {
+                    HStack {
+                        Image("person-icon-tidy-up")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 65, height: 65)
+                            .padding()
+                            .overlay(Circle()
+                                .stroke(lineWidth: 3)
+                                .opacity(0.4))
+                            .foregroundColor(Color(UIColor.systemBlue))
+                        Spacer()
+                    }
+                    .padding([.top, .horizontal])
+                
                     Text("Hi, \(user.name)!")
                         .font(.system(.title, design: .rounded)
                             .weight(.semibold))
@@ -42,12 +48,22 @@ struct ProfileView: View {
                         Divider()
                             .padding(.horizontal)
                         HStack {
-                            Text("Member since")
+                            Text("Joining Date")
                                 .fontWeight(.semibold)
                             Spacer()
-                            Text("\(Date(timeIntervalSince1970: user.joinDate).formatted(date: .abbreviated, time: .shortened))")
+                            Text("\(Date(timeIntervalSince1970: user.joinDate).formatted(date: .abbreviated, time: .omitted))")
                         }
                         .padding()
+                        if viewModel.registeredDays > 0 {
+                            Divider().padding(.horizontal)
+                            HStack {
+                                Text("Membership Period")
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                Text("\(viewModel.registeredDays) days")
+                            }
+                            .padding()
+                        }
                     }
                     .background(Color(UIColor.systemGroupedBackground))
                     .cornerRadius(8)
@@ -55,6 +71,17 @@ struct ProfileView: View {
                     Spacer()
                 } else {
                     Spacer()
+                    HStack {
+                        Image("person-icon-denied")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 65, height: 65)
+                            .padding()
+                            .overlay(Circle()
+                                .stroke(lineWidth: 3)
+                                .opacity(0.4))
+                            .foregroundColor(Color(UIColor.systemBlue))
+                    }
                     VStack {
                         Text("Error loading user information!")
                             .font(.body)
@@ -111,7 +138,7 @@ struct ProfileView: View {
                     .bold()
                 Spacer()
                 Text("\(Date(timeIntervalSince1970: user.joinDate).formatted(date: .abbreviated, time: .shortened))")
-            }            
+            }
         }
         .padding()
         

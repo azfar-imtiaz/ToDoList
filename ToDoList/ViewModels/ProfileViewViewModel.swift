@@ -11,6 +11,7 @@ import FirebaseFirestore
 
 class ProfileViewViewModel: ObservableObject {
     @Published var user: User? = nil
+    @Published var registeredDays: Int = -1
     
     init() {}
     
@@ -30,6 +31,12 @@ class ProfileViewViewModel: ObservableObject {
                     name: data["name"] as? String ?? "",
                     emailAddress: data["emailAddress"] as? String ?? "",
                     joinDate: data["joinDate"] as? TimeInterval ?? 0)
+                
+                if let joinDate = self?.user?.joinDate {
+                    let startDate = Date(timeIntervalSince1970: joinDate)
+                    let endDate = Date()
+                    self?.registeredDays = Calendar.current.dateComponents([.day], from: startDate, to: endDate).day!
+                }
             }
         }
     }
