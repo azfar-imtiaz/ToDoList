@@ -20,40 +20,57 @@ struct ProfileView: View {
                         .padding()
                         .overlay(Circle()
                             .stroke(lineWidth: 3))
+                        .foregroundColor(Color(UIColor.systemBlue))
                     Spacer()
                 }
                 .padding([.top, .horizontal])
-                Text("Hi, Azfar Imtiaz!")
-                    .font(.system(.title, design: .rounded)
-                        .weight(.semibold))
-                    .padding(.vertical)
                 
-                VStack (alignment: .leading) {
-                    HStack {
-                        Text("Email Address")
-                        Spacer()
-                        Text("azy.imtiaz@gmail.com")
+                if let user = viewModel.user {
+                    Text("Hi, \(user.name)!")
+                        .font(.system(.title, design: .rounded)
+                            .weight(.semibold))
+                        .padding(.vertical)
+                    
+                    VStack (alignment: .leading) {
+                        HStack {
+                            Text("Email Address")
+                                .fontWeight(.semibold)
+                            Spacer()
+                            Text("\(user.emailAddress)")
+                        }
+                        .padding()
+                        Divider()
+                            .padding(.horizontal)
+                        HStack {
+                            Text("Member since")
+                                .fontWeight(.semibold)
+                            Spacer()
+                            Text("\(Date(timeIntervalSince1970: user.joinDate).formatted(date: .abbreviated, time: .shortened))")
+                        }
+                        .padding()
                     }
+                    .background(Color(UIColor.systemGroupedBackground))
+                    .cornerRadius(8)
                     .padding()
-                    Divider()
-                        .padding(.horizontal)
-                    HStack {
-                        Text("Member since")
-                        Spacer()
-                        Text("2014")
+                    Spacer()
+                } else {
+                    Spacer()
+                    VStack {
+                        Text("Error loading user information!")
+                            .font(.body)
+                            .padding()
                     }
-                    .padding()
+                    .background(Color(UIColor.systemGroupedBackground))
+                    .cornerRadius(8)
+                    .padding(.vertical)
+                    Spacer()
                 }
-                .background(Color(UIColor.systemGroupedBackground))
-                .cornerRadius(8)
-                .padding()
-                Spacer()
                 TLButton(title: "Log Out", backgroundColor: .red, action: viewModel.logOut)
                     .frame(
                         width: UIScreen.main.bounds.width * 0.5,
                         height: UIScreen.main.bounds.height * 0.1
                     )
-                Spacer()                        
+                Spacer()
             }
             .navigationTitle("Profile")
         }
@@ -94,8 +111,7 @@ struct ProfileView: View {
                     .bold()
                 Spacer()
                 Text("\(Date(timeIntervalSince1970: user.joinDate).formatted(date: .abbreviated, time: .shortened))")
-            }
-            .padding()
+            }            
         }
         .padding()
         
