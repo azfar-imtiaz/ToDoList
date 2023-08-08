@@ -16,3 +16,5 @@ I used Firebase as the backend database for storing tasks and users data. The ap
 # In action
 I consider it best to upload a bunch of screenshots to show the app's layout and working. 
 
+#### Login screen
+![alt text](screenshots/login_view.png?raw=true "Login Screen")
